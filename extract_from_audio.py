@@ -5,7 +5,8 @@ import cv2
 import numpy as np
 
 
-def extract_text(file):    
+def extract_text(file):   
+    #convert video to audio 
     os.system("ffmpeg -i "+file+" -map 0:a -acodec copy audio.mp4")
     model = whisper.load_model("base")
     result = model.transcribe("audio.mp4", verbose = False)
