@@ -4,4 +4,4 @@
 python extract_from_audio.py test.mp4
 ```
 
-- [ ] Fixing time frames
+- [x] Fixing time frames
