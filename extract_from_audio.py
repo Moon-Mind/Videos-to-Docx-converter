@@ -22,6 +22,10 @@ def mse(img1, img2):
 def extract_images(file):
     #clean
     os.system('rm -r Data')
+    cap=cv2.VideoCapture(file)
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    images=[0]
+    times=[0]
     # Read the video from specified path
     cam = cv2.VideoCapture(file)
     
@@ -56,17 +60,22 @@ def extract_images(file):
                     print ("images same "+ str(currentframe))
                 
                 else:
-                    print ('Creating...' + name+str(res))
+                    time=float(currentframe/fps)
+                    #print ('Creating...' + name+" "+str(res))
                     # writing the extracted images
                     cv2.imwrite(name, frame)
-                    print("![ad]"+"("+path+")", file=open('TEST.md', 'a'))
+                    times.append(time)
+                    images.append("![]"+"("+path+")")
                     
 
+
             else:
-                #print ('Creating...' + name+str(res))
+                time=float(currentframe/fps)
+                #print ('Creating...' + name+" "+str(res))
                 # writing the extracted images
                 cv2.imwrite(name, frame)
-                print("![ad]"+"("+path+")", file=open('TEST.md', 'a'))
+                times.append(time)
+                images.append("![]"+"("+path+")")
 
        
             currentframe += 1
@@ -77,14 +86,19 @@ def extract_images(file):
     # Release all space and windows once done
     cam.release()
     cv2.destroyAllWindows()
+    return times,images
 
-print("Import Video:")
-#file = sys.argv[1]
+file = sys.argv[1]
+os.system("rm TEST.md")
 #print(file)
-file = "ITS-210330.mp4"
-cap=cv2.VideoCapture(file)
-fps = cap.get(cv2.CAP_PROP_FPS)
-extract_images(file)
-#data=extract_text(file)
-#for i, seg in enumerate(data):
-#  print(i+1, "- ", seg['text'],file=open('TEST.md', 'a'))
+#file = "test.mp4"
+array=extract_images(file)
+data=extract_text(file)
+
+for i, seg in enumerate(data):
+    print(i+1, "- ", seg['text'],file=open('TEST.md', 'a'))
+    count=0    
+    for time in array[0]:
+        if time >=seg['start'] and time <= seg['end']:
+            print(array[1][count],file=open('TEST.md', 'a'))
+            count+=1
