@@ -1,0 +1,1 @@
+## Whisper Clinet to rip Mp4 into Images and text
