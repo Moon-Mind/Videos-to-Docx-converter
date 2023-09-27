@@ -3,7 +3,7 @@ import os
 import sys
 import cv2
 import numpy as np
-
+import mdpdf
 
 def extract_text(file):   
     #convert video to audio 
@@ -52,13 +52,13 @@ def extract_images(file):
         if ret:
             # if video is still left continue creating images
             time=float(currentframe/fps)
-            name = './data/frame' + str(time) + '.jpg'
-            path ='/data/frame' + str(time) + '.jpg'    
+            name = './data/frame' + str(currentframe) + '.jpg'
+            path ='/data/frame' + str(currentframe) + '.jpg'    
             if(currentframe>0):
                 img1 = cv2.cvtColor(frame_old, cv2.COLOR_BGR2GRAY)
                 img2 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 res=mse(img1,img2)
-                if (res>=5.0):
+                if (res>=2.0):
                     #print ('Creating...' + name+" "+str(res))
                     # writing the extracted images
                     cv2.imwrite(name, frame)
@@ -86,18 +86,22 @@ def extract_images(file):
 #file = sys.argv[1]
 os.system("rm TEST.md")
 #print(file)
+pwd=os.getcwd()
 file = "test.mp4"
 array=extract_images(file)
 data=extract_text(file)
 end_old=0.0
+
 
 for i, seg in enumerate(data):
     print(i+1, "- ", seg['text'],file=open('TEST.md', 'a'))
     count=0    
     for time in array[0]:
         if time >=end_old and time <= seg['end']:
-            print(array[1][count],file=open('TEST.md', 'a'))
+            print(pwd+array[1][count],file=open('TEST.md', 'a'))
         
         count+=1
     
     end_old=seg['end']
+
+os.system("mdpdf -o test.pdf TEST.md") 
