@@ -89,17 +89,21 @@ def extract_images(file):
     cv2.destroyAllWindows()
     return times,images
 
-file = sys.argv[1]
+#file = sys.argv[1]
 os.system("rm TEST.md")
 #print(file)
-#file = "test.mp4"
+file = "ITS-210330.m4v"
 array=extract_images(file)
 data=extract_text(file)
+end_old=0.0
 
 for i, seg in enumerate(data):
     print(i+1, "- ", seg['text'],file=open('TEST.md', 'a'))
-    count=0    
+    count=0
     for time in array[0]:
-        if time >=seg['start'] and time <= seg['end']:
+        if time >=end_old and time <= seg['end']:
             print(array[1][count],file=open('TEST.md', 'a'))
             count+=1
+            end_old=seg['end']
+
+            
