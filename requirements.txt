@@ -1,4 +1,3 @@
 openai-whisper
 numpy
 opencv-python
-mdpdf
