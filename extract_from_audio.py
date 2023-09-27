@@ -3,7 +3,8 @@ import os
 import sys
 import cv2
 import numpy as np
-
+import glob
+from PIL import Image
 
 def extract_text(file):   
     #convert video to audio 
@@ -84,12 +85,9 @@ def extract_images(file):
     cv2.destroyAllWindows()
     return times,images
 
-#file = sys.argv[1]
-file = "test.mp4"
+file = sys.argv[1]
+#file = "test.mp4"
 name=(os.path.splitext(file)[0])
-os.system("rm "+name+'.md')
-os.system("rm "+name+'.pdf')
-os.system("rm "+name+'.doxs')
 print("Ripp images\n")
 array=extract_images(file)
 print("Ripp text\n")
