@@ -51,27 +51,21 @@ def extract_images(file):
 
         if ret:
             # if video is still left continue creating images
-            name = './data/frame' + str(currentframe) + '.jpg'
-            path ='/data/frame' + str(currentframe) + '.jpg'    
+            time=float(currentframe/fps)
+            name = './data/frame' + str(time) + '.jpg'
+            path ='/data/frame' + str(time) + '.jpg'    
             if(currentframe>0):
                 img1 = cv2.cvtColor(frame_old, cv2.COLOR_BGR2GRAY)
                 img2 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 res=mse(img1,img2)
-                if (res<5.0):
-                    print ("images same "+ str(currentframe))
-                
-                else:
-                    time=float(currentframe/fps)
+                if (res>=5.0):
                     #print ('Creating...' + name+" "+str(res))
                     # writing the extracted images
                     cv2.imwrite(name, frame)
                     times.append(time)
-                    images.append("![]"+"("+path+")")
-                    
-
+                    images.append("![]"+"("+path+")")           
 
             else:
-                time=float(currentframe/fps)
                 #print ('Creating...' + name+" "+str(res))
                 # writing the extracted images
                 cv2.imwrite(name, frame)
@@ -92,18 +86,18 @@ def extract_images(file):
 #file = sys.argv[1]
 os.system("rm TEST.md")
 #print(file)
-file = "ITS-210330.m4v"
+file = "test.mp4"
 array=extract_images(file)
 data=extract_text(file)
 end_old=0.0
 
 for i, seg in enumerate(data):
     print(i+1, "- ", seg['text'],file=open('TEST.md', 'a'))
-    count=0
+    count=0    
     for time in array[0]:
         if time >=end_old and time <= seg['end']:
             print(array[1][count],file=open('TEST.md', 'a'))
-            count+=1
-            end_old=seg['end']
-
-            
+        
+        count+=1
+    
+    end_old=seg['end']
