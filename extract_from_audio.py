@@ -108,7 +108,7 @@ for i, seg in enumerate(data):
 
 #export to file
 #print("Export to PDF")
-#os.system( "mdpdf -o "+name+".pdf"+" "+name+".md" ) 
+os.system( "mdpdf -o "+name+".pdf"+" "+name+".md" ) 
 print("Export to Word")
 os.system("pandoc -o "+name+".docx "+" "+name+".md")
 print("complete")
