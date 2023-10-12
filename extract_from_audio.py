@@ -89,10 +89,11 @@ pathinput= "Videos/"
 
 for d in  os.listdir(pathinput):
     file="Videos/"+d
+    print("Using Video : "+d)
     name=(os.path.splitext(file)[0])
-    print("Ripp images\n")
+    print("extractimages\n")
     array=extract_images(file)
-    print("Ripp text\n")
+    print("extract text\n")
     data=extract_text(file)
     end_old=0.0
 
