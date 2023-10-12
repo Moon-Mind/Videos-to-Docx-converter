@@ -8,9 +8,9 @@ from PIL import Image
 
 def extract_text(file):   
     #convert video to audio 
-    os.system("ffmpeg -i "+file+" -map 0:a -acodec copy audio.mp4")
+    os.system("ffmpeg -i "+file+" -map 0:a -acodec copy Temp/audio.mp4")
     model = whisper.load_model("base")
-    result = model.transcribe("audio.mp4", verbose = False)
+    result = model.transcribe("Temp/audio.mp4", verbose = False)
     os.system("rm audio.mp4")
     return result["segments"]
 
@@ -85,32 +85,34 @@ def extract_images(file):
     cv2.destroyAllWindows()
     return times,images
 
-file = sys.argv[1]
-#file = "test.mp4"
-name=(os.path.splitext(file)[0])
-print("Ripp images\n")
-array=extract_images(file)
-print("Ripp text\n")
-data=extract_text(file)
-end_old=0.0
+pathinput= "Videos/" 
+
+for d in  os.listdir(pathinput):
+    file="Videos/"+d
+    name=(os.path.splitext(file)[0])
+    print("Ripp images\n")
+    array=extract_images(file)
+    print("Ripp text\n")
+    data=extract_text(file)
+    end_old=0.0
 
 
-for i, seg in enumerate(data):
-    print(i+1, "- ", seg['text'],file=open(name+'.md', 'a'))
-    count=0    
-    for time in array[0]:
-        if time >=end_old and time <= seg['end']:
-            print(array[1][count],file=open(name+'.md', 'a'))
+    for i, seg in enumerate(data):
+        print(i+1, "- ", seg['text'],file=open(name+'.md', 'a'))
+        count=0    
+        for time in array[0]:
+            if time >=end_old and time <= seg['end']:
+                print(array[1][count],file=open(name+'.md', 'a'))
+            
+            count+=1
         
-        count+=1
-    
-    end_old=seg['end']
+        end_old=seg['end']
 
-#export to file
-#print("Export to PDF")
-os.system( "mdpdf -o "+name+".pdf"+" "+name+".md" ) 
-print("Export to Word")
-os.system("pandoc -o "+name+".docx "+" "+name+".md")
-print("complete")
-os.system("rm "+name+'.md')
+    #export to file
+    print("Export to PDF")
+    os.system( "mdpdf -o "+"Output/"+name+".pdf"+" "+name+".md" ) 
+    print("Export to Word")
+    os.system("pandoc -o "+"Output/"+name+".docx "+" "+name+".md")
+    print("complete")
+    os.system("rm "+name+'.md')
 
