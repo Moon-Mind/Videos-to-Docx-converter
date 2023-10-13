@@ -96,22 +96,27 @@ for d in  os.listdir(pathinput):
     print("Extract_text \n")
     data=extract_text(file)
     end_old=0.0
+    temp="Temp/"+"test"+".md"
+    temo="Temp/"+"test"+".docx"
 
     for i, seg in enumerate(data):
-        print(i+1, "- ", seg['text'],file=open("Temp/"+name+'.md', 'a'))
+        print(i+1, "- ", seg['text'],file=open("Temp/"+temp+'.md', 'a'))
         count=0    
         for time in array[0]:
             if time >=end_old and time <= seg['end']:
-                print(array[1][count],file=open("Temp/"+name+'.md', 'a'))
+                print(array[1][count],file=open("Temp/"+temp+'.md', 'a'))
             count+=1
         end_old=seg['end']
 
+
+
     #export to file
     print("Export to Word")
-    #os.system("pandoc -o "+"Output/"+name+".docx "+"Temp/"+name+".md")
+    os.system("pandoc -o"+ temo+" "+temp )
     print("complete")
     # clean up
-    os.system("rm Temp/"+name+'.md')
-    os.system("rm Temp/audio.mp4")
-    os.system('rm -r Temp/Data')
+    os.rename( temo, "Output/"+name+".docx ")
+    os.system("rm temp")
+    #os.system("rm Temp/audio.mp4")
+    #os.system('rm -r Temp/Data')
 
