@@ -33,7 +33,6 @@ def extract_images(file):
     cap=cv2.VideoCapture(file)
     fps = cap.get(cv2.CAP_PROP_FPS)
     totalNoFrames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
-    durationInSeconds = totalNoFrames 
 
     images=[0]
     times=[0]
@@ -54,7 +53,7 @@ def extract_images(file):
     #inti time
     currentframe = 0
     res=0
-    with alive_bar(int(durationInSeconds),force_tty=True) as bar:
+    with alive_bar(int(totalNoFrames),force_tty=True) as bar:
         while(True):
         
             # reading from frame
@@ -127,7 +126,7 @@ for d in  os.listdir(pathinput):
     #print("complete")
     # clean up
     #os.rename( temo, "Output/"+name+".docx ")
-    
+
     #os.remove("temp")
     #os.remove("Temp/audio.mp4")
     #os.remove('Temp/Data')
