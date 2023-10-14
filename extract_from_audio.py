@@ -6,6 +6,9 @@ import numpy as np
 import glob
 from PIL import Image
 from pydub import AudioSegment
+from alive_progress import alive_bar
+
+
 
 def extract_text(file):   
     #convert video to audio 
@@ -25,8 +28,13 @@ def mse(img1, img2):
 
 def extract_images(file):
     #clean
+    os.system('rm -r Temp/Data')
+
     cap=cv2.VideoCapture(file)
     fps = cap.get(cv2.CAP_PROP_FPS)
+    totalNoFrames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
+    durationInSeconds = totalNoFrames 
+
     images=[0]
     times=[0]
     pwd=os.getcwd()
@@ -46,44 +54,47 @@ def extract_images(file):
     #inti time
     currentframe = 0
     res=0
-    
-    while(True):
+    with alive_bar(int(durationInSeconds),force_tty=True) as bar:
+        while(True):
         
-        # reading from frame
-        ret,frame = cam.read()
+            # reading from frame
+            ret,frame = cam.read()
 
-        if ret:
-            # if video is still left continue creating images
-            time=float(currentframe/fps)
-            name = './Temp/data/frame' + str(currentframe) + '.jpg'
-            path =pwd+'/Temp/data/frame' + str(currentframe) + '.jpg'    
-            if(currentframe>0):
-                img1 = cv2.cvtColor(frame_old, cv2.COLOR_BGR2GRAY)
-                img2 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                res=mse(img1,img2)
-                if (res>=4.0):
+            if ret:
+                # if video is still left continue creating images
+                time=float(currentframe/fps)
+                #print(durationInSeconds-time)
+                name = './Temp/data/frame' + str(currentframe) + '.jpg'
+                path =pwd+'/Temp/data/frame' + str(currentframe) + '.jpg'    
+                if(currentframe>0):
+                    img1 = cv2.cvtColor(frame_old, cv2.COLOR_BGR2GRAY)
+                    img2 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                    res=mse(img1,img2)
+                    if (res>=4.0):
+                        #print ('Creating...' + name+" "+str(res))
+                        # writing the extracted images
+                        cv2.imwrite(name, frame)
+                        times.append(time)
+                        images.append("![]"+"("+path+")")           
+
+                else:
                     #print ('Creating...' + name+" "+str(res))
                     # writing the extracted images
                     cv2.imwrite(name, frame)
                     times.append(time)
-                    images.append("![]"+"("+path+")")           
+                    images.append("![]"+"("+path+")")
 
+                currentframe += 1
+                frame_old=frame
             else:
-                #print ('Creating...' + name+" "+str(res))
-                # writing the extracted images
-                cv2.imwrite(name, frame)
-                times.append(time)
-                images.append("![]"+"("+path+")")
-
-            currentframe += 1
-            frame_old=frame
-        else:
-            break
+                break
+            bar()
     
     # Release all space and windows once done
     cam.release()
     cv2.destroyAllWindows()
     return times,images
+
 
 pathinput= "Videos/" 
 
@@ -100,23 +111,22 @@ for d in  os.listdir(pathinput):
     temo="Temp/"+"test"+".docx"
 
     for i, seg in enumerate(data):
-        print(i+1, "- ", seg['text'],file=open("Temp/"+temp+'.md', 'a'))
+        print(i+1, "- ", seg['text'],file=open(temp, 'a'))
         count=0    
         for time in array[0]:
             if time >=end_old and time <= seg['end']:
-                print(array[1][count],file=open("Temp/"+temp+'.md', 'a'))
+                print(array[1][count],file=open(temp, 'a'))
             count+=1
         end_old=seg['end']
 
 
-
+    break
     #export to file
-    print("Export to Word")
-    os.system("pandoc -o"+ temo+" "+temp )
-    print("complete")
+    #print("Export to Word")
+    #os.system("pandoc -o"+ temo+" "+temp )
+    #print("complete")
     # clean up
-    os.rename( temo, "Output/"+name+".docx ")
-    os.system("rm temp")
+    #os.rename( temo, "Output/"+name+".docx ")
+    #os.system("rm temp")
     #os.system("rm Temp/audio.mp4")
     #os.system('rm -r Temp/Data')
-
