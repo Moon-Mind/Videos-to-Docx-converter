@@ -7,8 +7,8 @@ import glob
 from PIL import Image
 from pydub import AudioSegment
 from alive_progress import alive_bar
-
-
+import docx 
+from docx.shared import Pt
 
 def extract_text(file):   
     #convert video to audio 
@@ -28,7 +28,7 @@ def mse(img1, img2):
 
 def extract_images(file):
     #clean
-    os.remove('Temp/Data')
+    os.system('rm -r Temp/Data')
 
     cap=cv2.VideoCapture(file)
     fps = cap.get(cv2.CAP_PROP_FPS)
@@ -106,27 +106,33 @@ for d in  os.listdir(pathinput):
     print("Extract_text \n")
     data=extract_text(file)
     end_old=0.0
-    temp="Temp/"+"test"+".md"
-    temo="Temp/"+"test"+".docx"
+    #temp="Temp/"+"test"+".md"
+    temo="Output/"+name+".docx"
+    #os.remove(temp)
+    #os.remove(temo)
+    doc = docx.Document()
+    doc.add_heading(name, 0) 
+   
 
     for i, seg in enumerate(data):
-        print(i+1, "- ", seg['text'],file=open(temp, 'a'))
+        doc.add_paragraph().add_run(i+1, "- ", seg['text']) 
+        #print(i+1, "- ", seg['text'],file=open(temo, 'a'))
         count=0    
         for time in array[0]:
             if time >=end_old and time <= seg['end']:
-                print(array[1][count],file=open(temp, 'a'))
+                #print(array[1][count],file=open(temo, 'a'))
+                doc.add_paragraph().add_run(array[1][count])
             count+=1
         end_old=seg['end']
 
 
-    break
+    
+    doc.save(temo)
     #export to file
     #print("Export to Word")
     #os.system("pandoc -o"+ temo+" "+temp )
     #print("complete")
     # clean up
     #os.rename( temo, "Output/"+name+".docx ")
-
-    #os.remove("temp")
     #os.remove("Temp/audio.mp4")
-    #os.remove('Temp/Data')
+    #os.remove(temo)
