@@ -28,7 +28,7 @@ def mse(img1, img2):
 
 def extract_images(file):
     #clean
-    os.system('rm -r Temp/Data')
+    os.remove('Temp/Data')
 
     cap=cv2.VideoCapture(file)
     fps = cap.get(cv2.CAP_PROP_FPS)
@@ -127,6 +127,7 @@ for d in  os.listdir(pathinput):
     #print("complete")
     # clean up
     #os.rename( temo, "Output/"+name+".docx ")
-    #os.system("rm temp")
-    #os.system("rm Temp/audio.mp4")
-    #os.system('rm -r Temp/Data')
+    
+    #os.remove("temp")
+    #os.remove("Temp/audio.mp4")
+    #os.remove('Temp/Data')
