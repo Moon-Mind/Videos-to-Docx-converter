@@ -28,7 +28,7 @@ def mse(img1, img2):
 
 def extract_images(file):
     #clean
-    #os.system('rm -r Temp/Data')
+    os.system('rm -r Temp/Data')
 
     cap=cv2.VideoCapture(file)
     fps = cap.get(cv2.CAP_PROP_FPS)
@@ -108,7 +108,7 @@ for name in  os.listdir(pathinput):
     temo="Output/"+name+".docx"
     doc = docx.Document()
     doc.add_heading(name, 0)
-    
+
     print("Autput to Docx \n")
 
     with alive_bar(int(len(data)),force_tty=True) as bar:
