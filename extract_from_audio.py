@@ -108,6 +108,7 @@ for name in  os.listdir(pathinput):
     temo="Output/"+name+".docx"
     doc = docx.Document()
     doc.add_heading(name, 0)
+    
     print("Autput to Docx \n")
 
     with alive_bar(int(len(data)),force_tty=True) as bar:
