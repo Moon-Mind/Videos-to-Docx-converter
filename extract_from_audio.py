@@ -99,7 +99,7 @@ pathinput= "Videos/"
 
 for name in  os.listdir(pathinput):
     file="Videos/"+name
-    print("Using Video : "+d)
+    print("Using Video : "+name)
     print("Extract_images \n")
     array=extract_images(file)
     print("Extract_text \n")
@@ -107,16 +107,19 @@ for name in  os.listdir(pathinput):
     end_old=0.0
     temo="Output/"+name+".docx"
     doc = docx.Document()
-    doc.add_heading(name, 0) 
+    doc.add_heading(name, 0)
+    print("Autput to Docx \n")
 
-    for i, seg in enumerate(data):
-        doc.add_paragraph(str(i+1) +"- "+seg['text']) 
-        count=0    
-        for time in array[0]:
-            if time >=end_old and time <= seg['end']:
-                test=array[1][count]
-                doc.add_picture(test)
-            count+=1
-        end_old=seg['end']
+    with alive_bar(int(len(data)),force_tty=True) as bar:
+        for i, seg in enumerate(data):
+            doc.add_paragraph(str(i+1) +"- "+seg['text']) 
+            count=0    
+            for time in array[0]:
+                if time >=end_old and time <= seg['end']:
+                    test=array[1][count]
+                    doc.add_picture(test)
+                count+=1
+            end_old=seg['end']
+            bar()
 
     doc.save(temo)
