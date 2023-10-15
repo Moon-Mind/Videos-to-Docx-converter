@@ -28,14 +28,14 @@ def mse(img1, img2):
 
 def extract_images(file):
     #clean
-    os.system('rm -r Temp/Data')
+    #os.system('rm -r Temp/Data')
 
     cap=cv2.VideoCapture(file)
     fps = cap.get(cv2.CAP_PROP_FPS)
     totalNoFrames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
 
-    images=[0]
-    times=[0]
+    images=[]
+    times=[]
     pwd=os.getcwd()
     # Read the video from specified path
     cam = cv2.VideoCapture(file)
@@ -74,7 +74,7 @@ def extract_images(file):
                         # writing the extracted images
                         cv2.imwrite(name, frame)
                         times.append(time)
-                        images.append("![]"+"("+path+")")           
+                        images.append(path)           
 
                 else:
                     #print ('Creating...' + name+" "+str(res))
@@ -97,34 +97,26 @@ def extract_images(file):
 
 pathinput= "Videos/" 
 
-for d in  os.listdir(pathinput):
-    file="Videos/"+d
+for name in  os.listdir(pathinput):
+    file="Videos/"+name
     print("Using Video : "+d)
-    name=d
     print("Extract_images \n")
     array=extract_images(file)
     print("Extract_text \n")
     data=extract_text(file)
     end_old=0.0
-    #temp="Temp/"+"test"+".md"
     temo="Output/"+name+".docx"
-    #os.remove(temp)
-    #os.remove(temo)
     doc = docx.Document()
     doc.add_heading(name, 0) 
-   
 
     for i, seg in enumerate(data):
-        doc.add_paragraph(i+1, "- ", seg['text']) 
-        #print(i+1, "- ", seg['text'],file=open(temo, 'a'))
+        doc.add_paragraph(str(i+1) +"- "+seg['text']) 
         count=0    
         for time in array[0]:
             if time >=end_old and time <= seg['end']:
-                #print(array[1][count],file=open(temo, 'a'))
-                doc.add_picture(array[1][count])
+                test=array[1][count]
+                doc.add_picture(test)
             count+=1
         end_old=seg['end']
 
-
-    
     doc.save(temo)

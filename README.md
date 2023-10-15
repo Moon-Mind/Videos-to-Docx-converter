@@ -1,4 +1,6 @@
-## Whisper Clinet to rip Mp4 into Images and text
+## Whisper Client to rip Mp4 into Images and text
+
+
 
 ```bash
 pip install -r requirements.txt
