@@ -81,7 +81,7 @@ def extract_images(file):
                     # writing the extracted images
                     cv2.imwrite(name, frame)
                     times.append(time)
-                    images.append("![]"+"("+path+")")
+                    images.append(path)
 
                 currentframe += 1
                 frame_old=frame
@@ -115,24 +115,16 @@ for d in  os.listdir(pathinput):
    
 
     for i, seg in enumerate(data):
-        doc.add_paragraph().add_run(i+1, "- ", seg['text']) 
+        doc.add_paragraph(i+1, "- ", seg['text']) 
         #print(i+1, "- ", seg['text'],file=open(temo, 'a'))
         count=0    
         for time in array[0]:
             if time >=end_old and time <= seg['end']:
                 #print(array[1][count],file=open(temo, 'a'))
-                doc.add_paragraph().add_run(array[1][count])
+                doc.add_picture(array[1][count])
             count+=1
         end_old=seg['end']
 
 
     
     doc.save(temo)
-    #export to file
-    #print("Export to Word")
-    #os.system("pandoc -o"+ temo+" "+temp )
-    #print("complete")
-    # clean up
-    #os.rename( temo, "Output/"+name+".docx ")
-    #os.remove("Temp/audio.mp4")
-    #os.remove(temo)
