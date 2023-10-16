@@ -7,4 +7,4 @@ pip install -r requirements.txt
 python extract_from_audio.py test.mp4
 ```
 
-- [x] Fixing time frames
+- [x] Fixing time frame

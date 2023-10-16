@@ -9,6 +9,8 @@ from pydub import AudioSegment
 from alive_progress import alive_bar
 import docx 
 from docx.shared import Pt
+from docx.shared import Inches
+
 
 def extract_text(file):   
     #convert video to audio 
@@ -117,8 +119,7 @@ for name in  os.listdir(pathinput):
             count=0    
             for time in array[0]:
                 if time >=end_old and time <= seg['end']:
-                    test=array[1][count]
-                    doc.add_picture(test)
+                    doc.add_picture(array[1][count],width=Inches(6.9))
                 count+=1
             end_old=seg['end']
             bar()
