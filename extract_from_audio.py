@@ -30,8 +30,8 @@ def mse(img1, img2):
 
 def extract_images(file):
     #clean
-    #os.system('rm Temp/Data/*.jpg')
-    os.remove('Temp/Data/*.jpg')
+    
+    os.system('rm Temp/Data/*.jpg')
 
     cap=cv2.VideoCapture(file)
     fps = cap.get(cv2.CAP_PROP_FPS)
