@@ -1,3 +1,7 @@
 openai-whisper
 numpy
 opencv-python
+Pillow
+pydub
+alive-progress
+docx
