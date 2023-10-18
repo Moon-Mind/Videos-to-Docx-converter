@@ -3,7 +3,7 @@ import os
 import sys
 import cv2
 import numpy as np
-import glob
+#import glob
 from PIL import Image
 from pydub import AudioSegment
 from alive_progress import alive_bar
@@ -14,9 +14,8 @@ from docx.shared import Inches
 
 def extract_text(file):   
     #convert video to audio 
-    mp4_version = AudioSegment.from_file(file, "mp4")
+    mp4_version = AudioSegment.from_file(file, file[-3:])
     mp4_version.export(out_f = "Temp/audio.mp4", format = "wav")
-    #os.system("ffmpeg -i "file" -map 0:a -acodec copy Temp/audio.mp4")
     model = whisper.load_model("base")
     result = model.transcribe("Temp/audio.mp4", verbose = False)
     return result["segments"]
@@ -111,15 +110,18 @@ for name in  os.listdir(pathinput):
     temo="Output/"+name+".docx"
     doc = docx.Document()
     doc.add_heading(name, 0)
+    string=""
 
-    print("Autput to Docx \n")
+    print("Output to Docx \n")
 
     with alive_bar(int(len(data)),force_tty=True) as bar:
         for i, seg in enumerate(data):
-            doc.add_paragraph(str(i+1) +"- "+seg['text']) 
+            string=string+" "+seg['text'] 
             count=0    
             for time in array[0]:
                 if time >=end_old and time <= seg['end']:
+                    doc.add_paragraph(string)
+                    string=""
                     doc.add_picture(array[1][count],width=Inches(6.9))
                 count+=1
             end_old=seg['end']
