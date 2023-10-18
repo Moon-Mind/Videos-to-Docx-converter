@@ -101,10 +101,11 @@ pathinput= "Videos/"
 
 for name in  os.listdir(pathinput):
     file="Videos/"+name
-    print("Using Video : "+name)
-    print("Extract_images \n")
+    name=name[:-4]
+    print("\n Using Video : "+name)
+    print("Extract images \n")
     array=extract_images(file)
-    print("Extract_text \n")
+    print("Extract text \n")
     data=extract_text(file)
     end_old=0.0
     temo="Output/"+name+".docx"
