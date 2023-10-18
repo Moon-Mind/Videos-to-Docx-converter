@@ -3,7 +3,7 @@ Uses Videos and spilts the frames in /Temp/data then it compares the frames to t
 
 ```bash
 pip install -r requirements.txt
-python extract_from_audio.py test.mp4
+python extract_from_audio.py
 ```
 
 
