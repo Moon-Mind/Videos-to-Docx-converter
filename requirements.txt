@@ -4,4 +4,5 @@ opencv-python
 Pillow
 pydub
 alive-progress
-docx
+python-docx
+typing_extensions
