@@ -27,10 +27,10 @@ def mse(img1, img2):
    mse = err/(float(h*w))
    return mse
 
-def extract_images(file):
+def extract_images(file):                           
     #clean
     
-    os.system('rm Temp/Data/*.jpg')
+    os.system('rm Temp/data/*.jpg')
 
     cap=cv2.VideoCapture(file)
     fps = cap.get(cv2.CAP_PROP_FPS)
@@ -43,7 +43,7 @@ def extract_images(file):
     cam = cv2.VideoCapture(file)
     
     try:
-        # creating a folder named data
+        # creating a folder named data                           
         if not os.path.exists('Temp/data'):
             os.makedirs('Temp/data')
     
