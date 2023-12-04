@@ -4,8 +4,8 @@
  - adds both chronological in the Docx File
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 sudo apt install ffmpeg
 mkdir Videos # folder for the input videos
-python extract_from_audio.py
+python3 Video_to_Docx_converter.py_audio.py
 ```
