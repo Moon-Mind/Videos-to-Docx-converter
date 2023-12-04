@@ -1,5 +1,7 @@
 ## Videos to Docx converter
-Uses Videos and spilts the frames in /Temp/data then it compares the frames to the next if equal to a degree it dont saves it. Next it uses the audio of the Video to put in whisper and extract the spoken text and adds botch chronological in the Docx File
+ - spilts Video in frame compares the frames to a degree it dont saves it. 
+ - audio convertet with whisper to text 
+ - adds both chronological in the Docx File
 
 ```bash
 pip install -r requirements.txt
