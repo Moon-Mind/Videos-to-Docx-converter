@@ -1,5 +1,5 @@
 ## Videos to Docx converter
- - spilts Video in frame compares the frames to a degree it dont saves it. 
+ - spilts Video in frame compares the frames if there equal there got ignored
  - audio convertet with whisper to text 
  - adds both chronological in the Docx File
 
