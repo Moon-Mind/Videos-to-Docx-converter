@@ -8,4 +8,7 @@ pip3 install -r requirements.txt
 sudo apt install ffmpeg
 mkdir Videos # folder for the input videos
 python3 Video_to_Docx_converter.py_audio.py
+#convert viedeo
+for i in *.m4v; do ffmpeg -i "$i" "${i%.*}.mp4"; done
+
 ```
